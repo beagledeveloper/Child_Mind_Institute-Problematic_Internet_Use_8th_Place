@@ -22,7 +22,7 @@ If you run into any trouble with the setup/code or have any questions please con
 ## HARDWARE: (The following specs were used to create the original solution)
 
 * Ubuntu 22.04 LTS
-* CPU Intel Core i5-13500, Cores = 14
+* CPU Intel Core i5-13500, 14 Cores
 * RAM 64GB
 * 1 x NVIDIA GeForce RTX 4060Ti (VRAM 16GB)
 
