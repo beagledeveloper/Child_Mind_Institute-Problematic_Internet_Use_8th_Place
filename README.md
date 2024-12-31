@@ -5,8 +5,6 @@ https://www.kaggle.com/competitions/child-mind-institute-problematic-internet-us
 
 If you run into any trouble with the setup/code or have any questions please contact me at knmtkzkdeveloper@gmail.com
 
----
-
 ## ARCHIVE CONTENTS
 
 * data/train    : traing data (train.csv, series_train.parquet)
@@ -31,6 +29,10 @@ If you run into any trouble with the setup/code or have any questions please con
 * Python 3.10.12
 * CUDA 12.3
 * nvidia drivers v.545.23.06
+
+## LICENSE
+
+This software is licensed under the GNU Lesser General Public License v2.1. See the LICENSE file for details.
 
 ## DATA SETUP (assumes the [Kaggle API](https://github.com/Kaggle/kaggle-api) is installed)
 
