@@ -1,71 +1,80 @@
-Hello!
+# Child_Mind_Institute-Problematic_Internet_Use_8th_Place
 
 Below you can find a outline of how to reproduce my solution for the "Child Mind Institute — Problematic Internet Use" competition.
+https://www.kaggle.com/competitions/child-mind-institute-problematic-internet-use
+
 If you run into any trouble with the setup/code or have any questions please contact me at knmtkzkdeveloper@gmail.com
 
 ---
 
-# ARCHIVE CONTENTS
+## ARCHIVE CONTENTS
 
-kaggle_model.tgz          : original kaggle model upload - contains original code, additional training examples, corrected labels, etc
-comp_etc                     : contains ancillary information for prediction - clustering of training/test examples
-comp_mdl                     : model binaries used in generating solution
-comp_preds                   : model predictions
-train_code                  : code to rebuild models from scratch
-predict_code                : code to generate predictions from model binaries
+* data/train    : traing data (train.csv, series_train.parquet)
+* data/test    : test data (test.csv, series_test.parquet)
+* logs    : Standard output during training, including model features, the optimized QWK score, and its splitting thresholds
+* models    : models(catboost, xgboost, lightgbm, IterativeImputer) trained using stratified 5-fold validation with 3 random seeds and serialized by joblib.By running test.sh, these models will reproduce the result of my solution.
+* notebook    : notebooks capable of performing inference on Kaggle
+* scripts    : traing_* .py - training scripts, predict_* .py - inference scripts
+* submissions    : A .csv file of the inference results on the test data
+* train.sh    : A shell script to run the training script located under the scripts directory
+* test.sh    : A shell script to run the script predicting test data located under the scripts directory
 
---- 
-
-# HARDWARE: (The following specs were used to create the original solution)
+## HARDWARE: (The following specs were used to create the original solution)
 
 * Ubuntu 22.04 LTS
-* CPU Intel Core i5-13500
-* 1 x NVIDIA GeForce RTX 4060Ti (VRAM 16GiB)
+* CPU Intel Core i5-13500, Cores = 14
+* RAM 64GB
+* 1 x NVIDIA GeForce RTX 4060Ti (VRAM 16GB)
 
---- 
-
-# SOFTWARE (python packages are detailed separately in `requirements.txt`):
+## SOFTWARE (python packages are detailed separately in `requirements.txt`):
 
 * Python 3.10.12
 * CUDA 12.3
 * nvidia drivers v.545.23.06
 
---- 
+## DATA SETUP (assumes the [Kaggle API](https://github.com/Kaggle/kaggle-api) is installed)
 
-# DATA SETUP (assumes the [Kaggle API](https://github.com/Kaggle/kaggle-api) is installed)
-# below are the shell commands used in each step, as run from the top level directory
-mkdir -p data/stage1/
-cd data/stage1/
-kaggle competitions download -c <competition name> -f train.csv
-kaggle competitions download -c <competition name> -f test_stage_1.csv
+Please change the current directory to the top directory (where this README.md is located) of this repository, and then execute the following command:
 
-mkdir -p data/stage2/
-cd ../data/stage1/
-kaggle competitions download -c <competition name> -f test_stage_2.csv
-cd ..
+1. Download the training and sample test data and unzip them.
+```
+$ kaggle competitions download -c child-mind-institute-problematic-internet-use
+```
+```
+$ unzip child-mind-institute-problematic-internet-use.zip
+```
 
-#DATA PROCESSING
-# The train/predict code will also call this script if it has not already been run on the relevant data.
-python ./train_code/prepare_data.py --data_dir=data/stage1/ --output_dir=data/stage1_cleaned
+2. Move the training and sample test data.
+```
+$ mv child-mind-institute-problematic-internet-use/train.csv child-mind-institute-problematic-internet-use/series_train.parquet data/train/
+```
+```
+$ mv child-mind-institute-problematic-internet-use/test.csv child-mind-institute-problematic-internet-use/series_test.parquet data/test/
+```
 
-# MODEL BUILD: There are three options to produce the solution.
-1) very fast prediction
-    a) runs in a few minutes
-    b) uses precomputed neural network predictions
-2) ordinary prediction
-    a) expect this to run for 1-2 days
-    b) uses binary model files
-3) retrain models
-    a) expect this to run about a week
-    b) trains all models from scratch
-    c) follow this with (2) to produce entire solution from scratch
+# Run Train Code.
 
-shell command to run each build is below
-# 1) very fast prediction (overwrites comp_preds/sub1.csv and comp_preds/sub2.csv)
-python ./predict_code/calibrate_model.py
+1. Grant execution permission to the training shell scripts.
+```
+$ chmod +x train.sh
+```
 
-# 2) ordinary prediction (overwrites predictions in comp_preds directory)
-sh ./predict_code/predict_models.sh
+2. Run the training script. The trained and serialized model will be saved in the ./models directory.<br>   
+Note: If serialized models already exist in ./models, they will be updated.
+```
+$ ./train.sh
+```
 
-# 3) retrain models (overwrites models in comp_model directory)
-sh ./train_code/train_models.sh
+
+# Run Inference Code.
+
+1. Grant execution permission to the inference shell scripts.
+```
+$ chmod +x test.sh
+```
+
+2. Run the inference script. The predicted submission.csv file will be saved in the ./submissions directory.<br>   
+Note: If predicted submission.csv file already exist in ./submissions, they will be updated.
+```
+$ ./test.sh
+```
