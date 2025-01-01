@@ -54,7 +54,7 @@ $ mv child-mind-institute-problematic-internet-use/train.csv child-mind-institut
 $ mv child-mind-institute-problematic-internet-use/test.csv child-mind-institute-problematic-internet-use/series_test.parquet data/test/
 ```
 
-# Run Train Code.
+## Run Train Code.
 
 1. Grant execution permission to the training shell scripts.
 ```
@@ -68,7 +68,7 @@ $ ./train.sh
 ```
 
 
-# Run Inference Code.
+## Run Inference Code.
 
 1. Grant execution permission to the inference shell scripts.
 ```
